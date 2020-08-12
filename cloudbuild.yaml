@@ -1,10 +1,10 @@
 steps:
-  - name: 'docker.io/library/go:1.13'
-  #   entrypoint: /bin/sh
+  - name: golang
+    args: ['go', 'build', '.']
   #   # Run pip install and pytest in the same build step
   #   # (pip packages won't be preserved in future steps!)
   #   # args: [-c, 'pip install -r requirements.txt', '&&', 'pytest']
-    dir: 'functions'
+    # dir: 'functions'
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['functions', 'deploy', 'Get', '--runtime=go113', '--trigger-http', '--region=europe-west1']
     dir: 'functions'
