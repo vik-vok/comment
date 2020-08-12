@@ -7,4 +7,4 @@ steps:
   #   dir: 'functions/id/get'
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['functions', 'deploy', 'Get', '--runtime=go113', '--trigger-http', '--region=europe-west1']
-    dir: 'functionsgit'
+    dir: 'functions'
