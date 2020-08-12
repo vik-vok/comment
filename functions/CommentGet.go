@@ -7,13 +7,6 @@ import (
 	"net/http"
 )
 
-// Comment is good
-type Comment struct {
-	VoiceID string `json:"voiceID"`
-	UserID  string `json:"userID"`
-	Text    string `json:"text"`
-}
-
 // CommentGet function returns Comment with given id in json format
 func CommentGet(w http.ResponseWriter, r *http.Request) {
 	var d struct {

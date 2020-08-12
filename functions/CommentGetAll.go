@@ -7,13 +7,6 @@ import (
 	"net/http"
 )
 
-// Comment is good
-type Comment struct {
-	VoiceID string `json:"voiceID"`
-	UserID  string `json:"userID"`
-	Text    string `json:"text"`
-}
-
 // CommentGetAll function returns Comment with given id in json format
 func CommentGetAll(w http.ResponseWriter, r *http.Request) {
 	var d struct {
@@ -23,7 +16,6 @@ func CommentGetAll(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Error While Parsing Request Body!")
 		return
 	}
-
 	comment1 := Comment{
 		VoiceID: "123",
 		UserID:  "ab",
