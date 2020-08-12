@@ -14,8 +14,8 @@ type Comment struct {
 	Text    string `json:"text"`
 }
 
-// Get function returns Comment with given id in json format
-func Get(w http.ResponseWriter, r *http.Request) {
+// CommentGet function returns Comment with given id in json format
+func CommentGet(w http.ResponseWriter, r *http.Request) {
 	var d struct {
 		Message string `json:"message"`
 	}
