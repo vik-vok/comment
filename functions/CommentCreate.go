@@ -44,6 +44,5 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 4. Return Status OK (at this point everything is good)
-	w.WriteHeader(http.StatusOK)
 	fmt.Println("Added new Entity with key=" + key.String()) /* log new key */
 }
