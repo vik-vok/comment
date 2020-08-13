@@ -2,13 +2,11 @@
 package p
 
 import (
+	"cloud.google.com/go/datastore"
 	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
-
-	"cloud.google.com/go/datastore"
 )
 
 // CommentGet function returns Comment with given id in json format
@@ -32,7 +30,7 @@ func CommentGet(w http.ResponseWriter, r *http.Request) {
 
 	// 2. Get data from database
 	var comment Comment
-	commentKey := datastore.NameKey(EntityName, strconv.FormatInt(d.ID, 10), nil)
+	commentKey := datastore.IDKey(EntityName, d.ID, nil)
 	_, _ = fmt.Fprint(w, commentKey.String())
 	_, _ = fmt.Fprint(w, commentKey)
 	err = client.Get(ctx, commentKey, &comment)
