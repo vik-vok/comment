@@ -38,7 +38,7 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 
 	// store into database
 	key := datastore.IncompleteKey("Task", nil)
-	key, err = client.Put(ctx, key, comment)
+	key, err = client.Put(ctx, key, &comment)
 	if err != nil {
 		fmt.Println(err)
 	}
