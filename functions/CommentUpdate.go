@@ -14,7 +14,7 @@ import (
 // CommentUpdate function returns Comment with given id in json format
 func CommentUpdate(w http.ResponseWriter, r *http.Request) {
 	var req struct {
-		ID   string `"json:id"`
+		ID   string `json:"id"`
 		Text string `json:"text"`
 	}
 
@@ -38,6 +38,7 @@ func CommentUpdate(w http.ResponseWriter, r *http.Request) {
 
 	// 3. Store comment entity in database
 	commentKey := datastore.NameKey(EntityName, req.ID, nil)
+
 	tx, err := client.NewTransaction(ctx)
 	if err != nil {
 		log.Fatalf("client.NewTransaction: %v", err)
