@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"cloud.google.com/go/datastore"
@@ -36,24 +35,33 @@ func CommentUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// 3. Get data from database
+	// [START datastore_keys_only_query]
+	query := datastore.NewQuery(EntityName)
+	// [END datastore_keys_only_query]
+
+	keys, err := client.GetAll(ctx, query, nil)
+	fmt.Println(keys)
+
 	// 3. Store comment entity in database
-	commentKey := datastore.NameKey(EntityName, req.ID, nil)
-	fmt.Println(commentKey)
-	tx, err := client.NewTransaction(ctx)
-	if err != nil {
-		log.Fatalf("client.NewTransaction: %v", err)
-	}
-	var comment Comment
-	if err := tx.Get(commentKey, &comment); err != nil {
-		log.Fatalf("tx.Get: %v", err)
-	}
-	comment.Text = req.Text
-	if _, err := tx.Put(commentKey, &comment); err != nil {
-		log.Fatalf("tx.Put: %v", err)
-	}
-	if _, err := tx.Commit(); err != nil {
-		log.Fatalf("tx.Commit: %v", err)
-	}
+	// commentKey := datastore.NewQuery("Task")
+	// fmt.Println(commentKey)
+
+	// tx, err := client.NewTransaction(ctx)
+	// if err != nil {
+	// 	log.Fatalf("client.NewTransaction: %v", err)
+	// }
+	// var comment Comment
+	// if err := tx.Get(commentKey, &comment); err != nil {
+	// 	log.Fatalf("tx.Get: %v", err)
+	// }
+	// comment.Text = req.Text
+	// if _, err := tx.Put(commentKey, &comment); err != nil {
+	// 	log.Fatalf("tx.Put: %v", err)
+	// }
+	// if _, err := tx.Commit(); err != nil {
+	// 	log.Fatalf("tx.Commit: %v", err)
+	// }
 
 	// 4. Return Status OK (at this point everything is good)
 	w.WriteHeader(http.StatusOK)
