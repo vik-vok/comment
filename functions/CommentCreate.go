@@ -17,7 +17,9 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 		UserID  string `json:"userID"`
 		Text    string `json:"text"`
 	}
-	if err := json.NewDecoder(r.Body).Decode(&d); err != nil {
+	// Decode Request into struct
+	err := json.NewDecoder(r.Body).Decode(&d)
+	if err != nil {
 		fmt.Fprint(w, "Error While Parsing Request Body!")
 		return
 	}
@@ -27,10 +29,19 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 		UserID:  d.UserID,
 		Text:    d.Text}
 
+	// connect to database
 	ctx := context.Background()
-	client, _ := datastore.NewClient(ctx, "speech-similarity")
+	client, err := datastore.NewClient(ctx, "speech-similarity")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// store into database
 	key := datastore.IncompleteKey("Task", nil)
-	key, err := client.Put(ctx, key, comment)
+	key, err = client.Put(ctx, key, comment)
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	byteArray, err := json.Marshal(comment)
 	if err != nil {
