@@ -3,17 +3,17 @@ steps:
     args: ['go', 'version']
 
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['functions', 'deploy', 'CommentGet', '--runtime=go113', '--trigger-http', '--region=europe-west1']
+    args: ['functions', 'deploy', 'comment-create', '--runtime=go113', '--trigger-http', '--region=europe-west1' ,'--entry-point=CommentCreate']
     dir: 'functions'
 
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['functions', 'deploy', 'CommentGetAll', '--runtime=go113', '--trigger-http', '--region=europe-west1']
+    args: ['functions', 'deploy', 'comment-get', '--runtime=go113', '--trigger-http', '--region=europe-west1' ,'--entry-point=CommentGet']
     dir: 'functions'
 
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['functions', 'deploy', 'CommentCreate', '--runtime=go113', '--trigger-http', '--region=europe-west1']
+    args: ['functions', 'deploy', 'comment-get-all', '--runtime=go113', '--trigger-http', '--region=europe-west1' ,'--entry-point=CommentGetAll']
     dir: 'functions'
 
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['functions', 'deploy', 'CommentUpdate', '--runtime=go113', '--trigger-http', '--region=europe-west1']
+    args: ['functions', 'deploy', 'comment-update', '--runtime=go113', '--trigger-http', '--region=europe-west1' ,'--entry-point=CommentUpdate']
     dir: 'functions'
