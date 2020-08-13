@@ -2,9 +2,12 @@
 package p
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"cloud.google.com/go/datastore"
 )
 
 // CommentCreate function returns Comment with given id in json format
@@ -23,6 +26,11 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 		VoiceID: d.VoiceID,
 		UserID:  d.UserID,
 		Text:    d.Text}
+
+	ctx := context.Background()
+	client, _ := datastore.NewClient(ctx, "my-proj")
+	key := datastore.IncompleteKey("Task", nil)
+	key, err := client.Put(ctx, key, comment)
 
 	byteArray, err := json.Marshal(comment)
 	if err != nil {
