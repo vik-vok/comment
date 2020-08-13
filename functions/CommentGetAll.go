@@ -2,37 +2,31 @@
 package p
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"cloud.google.com/go/datastore"
 )
 
-// CommentGetAll function returns Comment with given id in json format
+// CommentGetAll function returns all Comments in json format
 func CommentGetAll(w http.ResponseWriter, r *http.Request) {
-	var d struct {
-		Message string `json:"message"`
-	}
-	if err := json.NewDecoder(r.Body).Decode(&d); err != nil {
-		fmt.Fprint(w, "Error While Parsing Request Body!")
+	// 1. Connect to database
+	ctx := context.Background()
+	client, err := datastore.NewClient(ctx, ProjectName)
+	if err != nil {
+		fmt.Println(err) /* log error */
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	comment1 := Comment{
-		VoiceID: "123",
-		UserID:  "ab",
-		Text:    "Best Voice1 Ever!!!"}
 
-	comment2 := Comment{
-		VoiceID: "456",
-		UserID:  "cd",
-		Text:    "Best Voice2 Ever!!!"}
+	// 2. Get data from database
+	query := datastore.NewQuery(EntityName)
+	var comments []Comment
+	_, err = client.GetAll(ctx, query, &comments)
 
-	comment3 := Comment{
-		VoiceID: "789",
-		UserID:  "ef",
-		Text:    "Best Voice3 Ever!!!"}
-
-	comments := [3]Comment{comment1, comment2, comment3}
-
+	// 3. Write into JSON
 	byteArray, err := json.Marshal(comments)
 	if err != nil {
 		fmt.Println(err)
