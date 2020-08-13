@@ -28,7 +28,7 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 		Text:    d.Text}
 
 	ctx := context.Background()
-	client, _ := datastore.NewClient(ctx, "my-proj")
+	client, _ := datastore.NewClient(ctx, "speech-similarity")
 	key := datastore.IncompleteKey("Task", nil)
 	key, err := client.Put(ctx, key, comment)
 
