@@ -34,7 +34,7 @@ func CommentGet(w http.ResponseWriter, r *http.Request) {
 	commentKey := datastore.IDKey(EntityName, d.ID, nil)
 	err = client.Get(ctx, commentKey, &comment)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err) /* log error */
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
@@ -43,7 +43,7 @@ func CommentGet(w http.ResponseWriter, r *http.Request) {
 	// 4. Cast Comment to JSON
 	byteArray, err := json.Marshal(comment)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err) /* log error */
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

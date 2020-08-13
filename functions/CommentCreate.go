@@ -2,24 +2,22 @@
 package p
 
 import (
+	"cloud.google.com/go/datastore"
 	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
-
-	"cloud.google.com/go/datastore"
 )
 
 // CommentCreate function returns Comment with given id in json format
 func CommentCreate(w http.ResponseWriter, r *http.Request) {
-	var comment Comment
-
 	// 1. Decode Request into Comment struct
+	var comment Comment
 	err := json.NewDecoder(r.Body).Decode(&comment)
 	if err != nil {
 		fmt.Println(err) /* log error */
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("500 - " + err.Error()))
+		_, _ = w.Write([]byte("500 - " + err.Error()))
 		return
 	}
 
@@ -29,7 +27,7 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err) /* log error */
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("500 - " + err.Error()))
+		_, _ = w.Write([]byte("500 - " + err.Error()))
 		return
 	}
 
@@ -39,10 +37,20 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err) /* log error */
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("500 - " + err.Error()))
+		_, _ = w.Write([]byte("500 - " + err.Error()))
 		return
 	}
 
-	// 4. Return Status OK (at this point everything is good)
-	fmt.Println(w, "Added new Entity with key="+key.String()) /* log new key */
+	// 4. Cast Comment to JSON
+	comment.ID = key.ID
+	byteArray, err := json.Marshal(comment)
+	if err != nil {
+		fmt.Println(err) /* log error */
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	// 5. Send response
+	w.WriteHeader(http.StatusOK)
+	_, _ = fmt.Fprint(w, string(byteArray))
 }
