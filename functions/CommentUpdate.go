@@ -38,7 +38,7 @@ func CommentUpdate(w http.ResponseWriter, r *http.Request) {
 
 	// 3. Store comment entity in database
 	commentKey := datastore.NameKey(EntityName, req.ID, nil)
-
+	fmt.Println(commentKey)
 	tx, err := client.NewTransaction(ctx)
 	if err != nil {
 		log.Fatalf("client.NewTransaction: %v", err)
