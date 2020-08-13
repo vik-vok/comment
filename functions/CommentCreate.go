@@ -17,10 +17,12 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 		UserID  string `json:"userID"`
 		Text    string `json:"text"`
 	}
+
 	// Decode Request into struct
 	err := json.NewDecoder(r.Body).Decode(&d)
 	if err != nil {
-		fmt.Fprint(w, "Error While Parsing Request Body!")
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("500 - " + err.Error()))
 		return
 	}
 
@@ -29,24 +31,24 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 		UserID:  d.UserID,
 		Text:    d.Text}
 
-	// connect to database
+	// 3. connect to database
 	ctx := context.Background()
 	client, err := datastore.NewClient(ctx, "speech-similarity")
 	if err != nil {
 		fmt.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("500 - " + err.Error()))
+		return
 	}
 
-	// store into database
-	key := datastore.IncompleteKey("Task", nil)
+	// store comment entity in database
+	key := datastore.IncompleteKey("Comment", nil)
 	key, err = client.Put(ctx, key, &comment)
 	if err != nil {
-		fmt.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("500 - " + err.Error()))
+		return
 	}
 
-	byteArray, err := json.Marshal(comment)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	fmt.Fprint(w, string(byteArray))
+	w.WriteHeader(http.StatusOK)
 }
