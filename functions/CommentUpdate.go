@@ -2,27 +2,23 @@
 package p
 
 import (
+	"cloud.google.com/go/datastore"
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
-
-	"cloud.google.com/go/datastore"
 )
 
 // CommentUpdate function returns Comment with given id in json format
 func CommentUpdate(w http.ResponseWriter, r *http.Request) {
+	// 1. Decode Request into Comment struct
 	var req struct {
-		ID   string `json:"id"`
+		ID   int64  `json:"id"`
 		Text string `json:"text"`
 	}
-
-	// 1. Decode Request into Comment struct
-	err := json.NewDecoder(r.Body).Decode(&req)
-	if err != nil {
-		fmt.Println(err) /* log error */
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("500 - " + err.Error()))
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		_, _ = fmt.Fprint(w, "Error While Parsing Request Body!")
 		return
 	}
 
@@ -35,43 +31,31 @@ func CommentUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 3. Get data from database
-	// [START datastore_keys_only_query]
-	query := datastore.NewQuery(EntityName)
-	fmt.Println(query)
-	// [END datastore_keys_only_query]
+	// 3. Get data
+	var comment Comment
+	commentKey := datastore.IDKey(EntityName, req.ID, nil)
+	err = client.Get(ctx, commentKey, &comment)
+	if err != nil {
+		fmt.Println(err) /* log error */
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
 
-	var comment []Comment
-	keys, err := client.GetAll(ctx, query, &comment)
-	fmt.Println(keys)
-	fmt.Println(comment)
+	// 4. Update and save
+	comment.Text = req.Text
+	if _, err := client.Put(ctx, commentKey, &comment); err != nil {
+		log.Fatalf("tx.Put: %v", err)
+	}
 
-	query = datastore.NewQuery(EntityName)
-	// [END datastore_keys_only_query]
+	// 5. Cast Comment to JSON
+	byteArray, err := json.Marshal(comment)
+	if err != nil {
+		fmt.Println(err) /* log error */
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
-	keys, err = client.GetAll(ctx, query, nil)
-	fmt.Println(keys)
-
-	// 3. Store comment entity in database
-	// commentKey := datastore.NewQuery("Task")
-	// fmt.Println(commentKey)
-
-	// tx, err := client.NewTransaction(ctx)
-	// if err != nil {
-	// 	log.Fatalf("client.NewTransaction: %v", err)
-	// }
-	// var comment Comment
-	// if err := tx.Get(commentKey, &comment); err != nil {
-	// 	log.Fatalf("tx.Get: %v", err)
-	// }
-	// comment.Text = req.Text
-	// if _, err := tx.Put(commentKey, &comment); err != nil {
-	// 	log.Fatalf("tx.Put: %v", err)
-	// }
-	// if _, err := tx.Commit(); err != nil {
-	// 	log.Fatalf("tx.Commit: %v", err)
-	// }
-
-	// 4. Return Status OK (at this point everything is good)
+	// 6. Send response
 	w.WriteHeader(http.StatusOK)
+	_, _ = fmt.Fprint(w, string(byteArray))
 }
