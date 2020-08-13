@@ -25,7 +25,7 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 
 	// 2. Connect to database
 	ctx := context.Background()
-	client, err := datastore.NewClient(ctx, "speech-similarity")
+	client, err := datastore.NewClient(ctx, ProjectName)
 	if err != nil {
 		fmt.Println(err) /* log error */
 		w.WriteHeader(http.StatusInternalServerError)
@@ -34,12 +34,8 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 3. Store comment entity in database
-	key := datastore.IncompleteKey("Comment", nil)
-	fmt.Println(key) /* log error */
-
+	key := datastore.IncompleteKey(EntityName, nil)
 	key, err = client.Put(ctx, key, &comment)
-	fmt.Println(key) /* log error */
-
 	if err != nil {
 		fmt.Println(err) /* log error */
 		w.WriteHeader(http.StatusInternalServerError)
