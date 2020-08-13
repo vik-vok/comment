@@ -3,8 +3,8 @@ package p
 // Comment is good
 type Comment struct {
 	ID      int64
-	VoiceID string `json:"voiceID"`
-	UserID  string `json:"userID"`
+	VoiceID int64  `json:"voiceID"`
+	UserID  int64  `json:"userID"`
 	Text    string `json:"text"`
 }
 
