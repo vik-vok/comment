@@ -9,8 +9,9 @@ import (
 	"net/http"
 )
 
-// CommentGet function returns Comment with given id in json format
+// CommentGet function returns Comment with given id in JSON format
 func CommentGet(w http.ResponseWriter, r *http.Request) {
+	// 1. Write ID from request into struct d
 	var d struct {
 		ID int64 `json:"id"`
 	}
@@ -19,7 +20,7 @@ func CommentGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 1. Connect to database
+	// 2. Connect to database
 	ctx := context.Background()
 	client, err := datastore.NewClient(ctx, ProjectName)
 	if err != nil {
@@ -28,23 +29,26 @@ func CommentGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 2. Get data from database
+	// 3. Get data from database
 	var comment Comment
 	commentKey := datastore.IDKey(EntityName, d.ID, nil)
-	_, _ = fmt.Fprint(w, commentKey.String())
-	_, _ = fmt.Fprint(w, commentKey)
 	err = client.Get(ctx, commentKey, &comment)
 	if err != nil {
 		fmt.Println(err)
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 	comment.ID = d.ID
 
+	// 4. Cast Comment to JSON
 	byteArray, err := json.Marshal(comment)
 	if err != nil {
 		fmt.Println(err)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
+	// 5. Send response
+	w.WriteHeader(http.StatusOK)
 	_, _ = fmt.Fprint(w, string(byteArray))
 }
