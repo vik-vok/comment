@@ -38,9 +38,18 @@ func CommentUpdate(w http.ResponseWriter, r *http.Request) {
 	// 3. Get data from database
 	// [START datastore_keys_only_query]
 	query := datastore.NewQuery(EntityName)
+	fmt.Println(query)
 	// [END datastore_keys_only_query]
 
-	keys, err := client.GetAll(ctx, query, nil)
+	var comment []Comment
+	keys, err := client.GetAll(ctx, query, &comment)
+	fmt.Println(keys)
+	fmt.Println(comment)
+
+	query = datastore.NewQuery(EntityName)
+	// [END datastore_keys_only_query]
+
+	keys, err = client.GetAll(ctx, query, nil)
 	fmt.Println(keys)
 
 	// 3. Store comment entity in database
