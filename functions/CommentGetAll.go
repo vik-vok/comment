@@ -24,7 +24,11 @@ func CommentGetAll(w http.ResponseWriter, r *http.Request) {
 	// 2. Get data from database
 	query := datastore.NewQuery(EntityName)
 	var comments []Comment
-	_, err = client.GetAll(ctx, query, &comments)
+	ids, err := client.GetAll(ctx, query, &comments)
+
+	for i := 0; i < len(comments); i++ {
+		comments[i].ID = ids[i].ID
+	}
 
 	// 3. Write into JSON
 	byteArray, err := json.Marshal(comments)

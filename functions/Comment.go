@@ -2,7 +2,7 @@ package p
 
 // Comment is good
 type Comment struct {
-	ID      string
+	ID      int64
 	VoiceID string `json:"voiceID"`
 	UserID  string `json:"userID"`
 	Text    string `json:"text"`
