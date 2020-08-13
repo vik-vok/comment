@@ -12,43 +12,41 @@ import (
 
 // CommentCreate function returns Comment with given id in json format
 func CommentCreate(w http.ResponseWriter, r *http.Request) {
-	var d struct {
-		VoiceID string `json:"voiceID"`
-		UserID  string `json:"userID"`
-		Text    string `json:"text"`
-	}
+	var comment Comment
 
-	// Decode Request into struct
-	err := json.NewDecoder(r.Body).Decode(&d)
+	// 1. Decode Request into Comment struct
+	err := json.NewDecoder(r.Body).Decode(&comment)
 	if err != nil {
+		fmt.Println(err) /* log error */
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("500 - " + err.Error()))
 		return
 	}
 
-	comment := Comment{
-		VoiceID: d.VoiceID,
-		UserID:  d.UserID,
-		Text:    d.Text}
-
-	// 3. connect to database
+	// 2. Connect to database
 	ctx := context.Background()
 	client, err := datastore.NewClient(ctx, "speech-similarity")
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err) /* log error */
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("500 - " + err.Error()))
 		return
 	}
 
-	// store comment entity in database
+	// 3. Store comment entity in database
 	key := datastore.IncompleteKey("Comment", nil)
+	fmt.Println(key) /* log error */
+
 	key, err = client.Put(ctx, key, &comment)
+	fmt.Println(key) /* log error */
+
 	if err != nil {
+		fmt.Println(err) /* log error */
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("500 - " + err.Error()))
 		return
 	}
 
+	// 4. Return Status OK (at this point everything is good)
 	w.WriteHeader(http.StatusOK)
 }
