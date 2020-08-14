@@ -1,0 +1,1 @@
+gcloud alpha builds triggers create github --trigger-config='workflows/trigger-configs/config-get.yaml'

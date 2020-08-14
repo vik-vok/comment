@@ -1,0 +1,9 @@
+filename: workflows/cloudbuild-get.yaml
+github:
+  name: comment
+  owner: vik-vok
+  push:
+    branch: ^master$
+includedFiles:
+  - ^functions\/CommentGet.go(.*)
+name: comment-get-trigger
