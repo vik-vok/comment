@@ -3,11 +3,11 @@ REPO_NAME="comment"
 REPO_OWNER="vik-vok"
 
 array=(
-  'comment-create':'CommentCreate.go'
-  'comment-get':'CommentGet.go'
-  'comment-get-all':'CommentGetAll.go'
-  'comment-update':'CommentUpdate.go'
-  'comment-delete':'CommentDelete.go'
+  'comment-create':'CommentCreate'
+  'comment-get':'CommentGet'
+  'comment-get-all':'CommentGetAll'
+  'comment-update':'CommentUpdate'
+  'comment-delete':'CommentDelete'
 )
 
 for i in "${array[@]}"; do
@@ -23,7 +23,7 @@ for i in "${array[@]}"; do
   gcloud beta builds triggers create github \
     --repo-name="${REPO_NAME}" \
     --repo-owner="${REPO_OWNER}" \
-    --included-files="functions/${GO_FUNC_NAME}" \
+    --included-files="functions/${GO_FUNC_NAME}.go" \
     --name="${TRIGGER_NAME}" \
     --branch-pattern="^master$" \
     --build-config=${BUILD_CONF} \

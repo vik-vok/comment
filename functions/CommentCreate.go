@@ -9,7 +9,6 @@ import (
 	"net/http"
 )
 
-// test comment
 // CommentCreate function returns Comment with given id in json format
 func CommentCreate(w http.ResponseWriter, r *http.Request) {
 	// 1. Decode Request into Comment struct
