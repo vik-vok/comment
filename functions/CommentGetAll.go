@@ -21,6 +21,7 @@ func CommentGetAll(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// test comment
 	// 2. Get data from database
 	var comments []Comment
 	query := datastore.NewQuery(EntityName)
