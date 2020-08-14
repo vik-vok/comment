@@ -1,7 +1,0 @@
-steps:
-  - name: 'mirror.gcr.io/library/golang'
-    args: ['go', 'version']
-
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['functions', 'deploy', 'comment-create', '--runtime=go113', '--trigger-http', '--region=europe-west1' ,'--entry-point=CommentCreate']
-    dir: 'functions'
