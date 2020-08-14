@@ -7,6 +7,7 @@ array=(
   'comment-get':'CommentGet.go'
   'comment-get-all':'CommentGetAll.go'
   'comment-get-update':'CommentUpdate.go'
+  'comment-get-delete':'CommentDelete.go'
 )
 
 for i in "${array[@]}"; do
