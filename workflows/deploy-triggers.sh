@@ -1,4 +1,4 @@
-BUILD_CONF='cloudbuild_template.yaml'
+BUILD_CONF='workflows/cloudbuild_template.yaml'
 REPO_NAME="comment"
 REPO_OWNER="vik-vok"
 
