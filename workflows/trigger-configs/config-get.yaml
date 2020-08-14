@@ -5,5 +5,5 @@ github:
   push:
     branch: ^master$
 includedFiles:
-  - ^functions\/CommentGet.go(.*)
+  - functions/CommentGet.go
 name: comment-get-trigger
