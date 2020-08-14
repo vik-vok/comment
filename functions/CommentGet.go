@@ -30,6 +30,7 @@ func CommentGet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 3. Get data
+	// test comment
 	var comment Comment
 	commentKey := datastore.IDKey(EntityName, d.ID, nil)
 	err = client.Get(ctx, commentKey, &comment)
