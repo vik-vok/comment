@@ -13,7 +13,7 @@ import (
 func CommentGet(w http.ResponseWriter, r *http.Request) {
 	// 1. Write ID from request into struct d
 	var d struct {
-		ID string `json:"id"`
+		ID int64 `json:"id"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&d); err != nil {
 		_, _ = fmt.Fprint(w, "Error While Parsing Request Body!")
@@ -31,21 +31,14 @@ func CommentGet(w http.ResponseWriter, r *http.Request) {
 
 	// 3. Get data
 	var comment Comment
-	//commentKey := datastore.IDKey(EntityName, d.ID, nil)
-	commentKey, err := datastore.DecodeKey(d.ID)
-	if err != nil {
-		fmt.Println(err) /* log error */
-		w.WriteHeader(http.StatusNotFound)
-		return
-	}
-
+	commentKey := datastore.IDKey(EntityName, d.ID, nil)
 	err = client.Get(ctx, commentKey, &comment)
 	if err != nil {
 		fmt.Println(err) /* log error */
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
-	//comment.ID = d.ID
+	comment.ID = d.ID
 
 	// 4. Cast Comment to JSON
 	byteArray, err := json.Marshal(comment)

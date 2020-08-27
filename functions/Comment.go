@@ -1,11 +1,8 @@
 package p
 
-import "cloud.google.com/go/datastore"
-
 // Comment is good
 type Comment struct {
-	//ID      int64
-	ID *datastore.Key `datastore:"__key__"`
+	ID      int64
 	VoiceID string `json:"voiceID"`
 	UserID  string `json:"userID"`
 	Text    string `json:"text"`
