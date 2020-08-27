@@ -22,7 +22,7 @@ func CommentGetAll(w http.ResponseWriter, r *http.Request) {
 
 	// 2. Get data from database
 	var comments []Comment
-	query := datastore.NewQuery(EntityName)
+	query := datastore.NewQuery(EntityName).Order("created")
 	ids, err := client.GetAll(ctx, query, &comments)
 	// 2.1 Iterate and assign IDs to each comments
 	for i, _ := range comments {
