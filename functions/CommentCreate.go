@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 // CommentCreate function returns Comment with given id in json format
@@ -20,6 +21,7 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte("500 - " + err.Error()))
 		return
 	}
+	comment.Created = time.Now()
 
 	// 2. Connect to database
 	ctx := context.Background()
