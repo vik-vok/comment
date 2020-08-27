@@ -35,6 +35,7 @@ func CommentGetAll(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 
 	// 5. Send response
