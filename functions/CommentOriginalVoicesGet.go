@@ -18,7 +18,7 @@ func CommentOriginalVoicesGet(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&d); err != nil {
 		d.ID = r.FormValue("voiceId")
 		if d.ID == "" {
-			_, _ = fmt.Fprint(w, "Error While Parsing Request Body!\n URL: " + r.URL.Path)
+			_, _ = fmt.Fprint(w, "Error While Parsing Request Body!\n URL: "+r.URL.Path)
 			return
 		}
 	}
@@ -34,13 +34,12 @@ func CommentOriginalVoicesGet(w http.ResponseWriter, r *http.Request) {
 
 	// 3. Get data
 	var comments []Comment
-	query := datastore.NewQuery(EntityName).Filter("VoiceID =", d.ID).Order("created")
+	query := datastore.NewQuery(EntityName).Filter("VoiceID =", d.ID).Order("Created")
 	ids, err := client.GetAll(ctx, query, &comments)
 	// 2.1 Iterate and assign IDs to each comments
 	for i, _ := range comments {
 		comments[i].ID = ids[i].ID
 	}
-
 
 	// 4. Cast Comment to JSON
 	byteArray, err := json.Marshal(comments)

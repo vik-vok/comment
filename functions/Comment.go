@@ -8,7 +8,7 @@ type Comment struct {
 	VoiceID string `json:"voiceID"`
 	UserID  string `json:"userID"`
 	Text    string `json:"text"`
-	Created         time.Time
+	Created time.Time
 }
 
 // ProjectName is used for datastore.newClient()
