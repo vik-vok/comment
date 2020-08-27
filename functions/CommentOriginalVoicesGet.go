@@ -42,7 +42,7 @@ func CommentOriginalVoicesGet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 4. Cast Comment to JSON
-	byteArray, err := json.Marshal(ids)
+	byteArray, err := json.Marshal(ids[0].ID)
 	if err != nil {
 		fmt.Println(err) /* log error */
 		w.WriteHeader(http.StatusInternalServerError)
