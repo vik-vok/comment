@@ -4,7 +4,7 @@ import "time"
 
 // Comment is good
 type Comment struct {
-	ID      int64
+	ID      int64  `datastore:"-"`
 	VoiceID string `json:"voiceID"`
 	UserID  string `json:"userID"`
 	Text    string `json:"text"`
