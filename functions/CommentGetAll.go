@@ -2,13 +2,11 @@
 package p
 
 import (
+	"cloud.google.com/go/datastore"
 	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
-
-	"cloud.google.com/go/datastore"
 )
 
 // CommentGetAll function returns all Comments in json format
@@ -29,7 +27,6 @@ func CommentGetAll(w http.ResponseWriter, r *http.Request) {
 	// 2.1 Iterate and assign IDs to each comments
 	for i, _ := range comments {
 		comments[i].ID = ids[i].ID
-		_, _ = fmt.Fprint(w, strconv.FormatInt(ids[i].ID, 10))
 	}
 
 	// 3. Write into JSON

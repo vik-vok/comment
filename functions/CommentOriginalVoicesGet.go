@@ -37,8 +37,8 @@ func CommentOriginalVoicesGet(w http.ResponseWriter, r *http.Request) {
 	query := datastore.NewQuery(EntityName).Filter("VoiceID =", d.ID)
 	ids, err := client.GetAll(ctx, query, &comments)
 	// 2.1 Iterate and assign IDs to each comments
-	for i, comment := range comments {
-		comment.ID = ids[i].ID
+	for i, _ := range comments {
+		comments[i].ID = ids[i].ID
 	}
 
 
