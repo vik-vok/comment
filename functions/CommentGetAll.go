@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"cloud.google.com/go/datastore"
 )
@@ -28,6 +29,7 @@ func CommentGetAll(w http.ResponseWriter, r *http.Request) {
 	// 2.1 Iterate and assign IDs to each comments
 	for i, comment := range comments {
 		comment.ID = ids[i].ID
+		_, _ = fmt.Fprint(w, strconv.FormatInt(ids[i].ID, 10))
 	}
 
 	// 3. Write into JSON
