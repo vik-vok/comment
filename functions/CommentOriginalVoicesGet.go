@@ -35,12 +35,11 @@ func CommentOriginalVoicesGet(w http.ResponseWriter, r *http.Request) {
 	// 3. Get data
 	var comments []Comment
 	query := datastore.NewQuery(EntityName).Filter("VoiceID =", d.ID)
-	ids, err := client.GetAll(ctx, query, &comments)
+	_, err = client.GetAll(ctx, query, &comments)
 	// 2.1 Iterate and assign IDs to each comments
-	for i, comment := range comments {
-		comment.ID = ids[i].ID
-		comment.Text = "EEE"
-	}
+	//for i, comment := range comments {
+	//	comment.Text = "EEE"
+	//}
 
 	// 4. Cast Comment to JSON
 	byteArray, err := json.Marshal(comments)
