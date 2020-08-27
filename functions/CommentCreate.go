@@ -22,7 +22,6 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	comment.Created = time.Now()
-	comment.ID = nil;
 
 	// 2. Connect to database
 	ctx := context.Background()
