@@ -39,10 +39,11 @@ func CommentOriginalVoicesGet(w http.ResponseWriter, r *http.Request) {
 	// 2.1 Iterate and assign IDs to each comments
 	for i, comment := range comments {
 		comment.ID = ids[i].ID
+		comment.Text = "EEE"
 	}
 
 	// 4. Cast Comment to JSON
-	byteArray, err := json.Marshal(ids[0].ID)
+	byteArray, err := json.Marshal(comments)
 	if err != nil {
 		fmt.Println(err) /* log error */
 		w.WriteHeader(http.StatusInternalServerError)
