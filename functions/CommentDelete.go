@@ -14,7 +14,7 @@ import (
 func CommentDelete(w http.ResponseWriter, r *http.Request) {
 	// 1. Write ID from request into struct d
 	var d struct {
-		ID int64 `json:"id"`
+		ID int64 `json:"commentId"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&d); err != nil {
 		idStr := r.FormValue("id")
