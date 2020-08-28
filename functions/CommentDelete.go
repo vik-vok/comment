@@ -17,8 +17,9 @@ func CommentDelete(w http.ResponseWriter, r *http.Request) {
 		ID int64 `json:"commentId"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&d); err != nil {
-		idStr := r.FormValue("id")
+		idStr := r.FormValue("commentId")
 		if idStr == "" {
+			w.WriteHeader(http.StatusInternalServerError)
 			_, _ = fmt.Fprint(w, "Error While Parsing Request Body!\n URL: "+r.URL.Path)
 			return
 		}else {
@@ -26,6 +27,7 @@ func CommentDelete(w http.ResponseWriter, r *http.Request) {
 				d.ID = int64(n)
 			} else {
 				fmt.Println(err) /* log error */
+				w.WriteHeader(http.StatusInternalServerError)
 				_, _ = fmt.Fprint(w, idStr, " is not an integer.")
 				return
 			}
