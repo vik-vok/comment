@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
 // CommentDelete function deletes comment
@@ -16,8 +17,17 @@ func CommentDelete(w http.ResponseWriter, r *http.Request) {
 		ID int64 `json:"id"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&d); err != nil {
-		_, _ = fmt.Fprint(w, "Error While Parsing Request Body!")
-		return
+		idStr := r.FormValue("id")
+		if idStr == "" {
+			_, _ = fmt.Fprint(w, "Error While Parsing Request Body!\n URL: "+r.URL.Path)
+			return
+		}else {
+			if n, err := strconv.Atoi(idStr); err == nil {
+				fmt.Println(n+1)
+			} else {
+				fmt.Println(idStr, "is not an integer.")
+			}
+		}
 	}
 
 	// 2. Connect to database
