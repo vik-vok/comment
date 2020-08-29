@@ -19,7 +19,8 @@ func CommentOriginalVoicesGet(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&d); err != nil {
 		d.ID = r.FormValue("voiceId")
 		if d.ID == "" {
-			_, _ = fmt.Fprint(w, "Error While Parsing Request Body!\n URL: "+r.URL.Path)
+			_, _ = fmt.Fprint(w, "Error While Parsing Request Body!\n URL: "+r.URL.String())
+			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 	}
