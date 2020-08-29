@@ -42,7 +42,7 @@ func CommentOriginalVoicesGet(w http.ResponseWriter, r *http.Request) {
 	for i, _ := range comments {
 		comments[i].commentId = ids[i].ID
 	}
-
+	// 2.2 Sort with created date
 	sort.Slice(comments, func(i, j int) bool {
 		return comments[i].Created.Before(comments[j].Created)
 	})

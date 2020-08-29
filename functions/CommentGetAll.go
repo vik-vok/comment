@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sort"
 )
 
 // CommentGetAll function returns all Comments in json format
@@ -22,12 +23,18 @@ func CommentGetAll(w http.ResponseWriter, r *http.Request) {
 
 	// 2. Get data from database
 	var comments []Comment
-	query := datastore.NewQuery(EntityName).Order("created")
+	query := datastore.NewQuery(EntityName)
 	ids, err := client.GetAll(ctx, query, &comments)
 	// 2.1 Iterate and assign IDs to each comments
 	for i, _ := range comments {
 		comments[i].commentId = ids[i].ID
 	}
+	// 2.2 Sort with created date
+	sort.Slice(comments, func(i, j int) bool {
+		return comments[i].Created.Before(comments[j].Created)
+	})
+	fmt.Printf("%+v\n", comments)
+
 
 	// 3. Write into JSON
 	byteArray, err := json.Marshal(comments)
