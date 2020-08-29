@@ -14,7 +14,7 @@ import (
 func CommentUpdate(w http.ResponseWriter, r *http.Request) {
 	// 1. Decode Request into Comment struct
 	var req struct {
-		ID   int64  `json:"id"`
+		ID   int64  `json:"commentId"`
 		Text string `json:"text"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

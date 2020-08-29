@@ -4,11 +4,11 @@ import "time"
 
 // Comment is good
 type Comment struct {
-	ID      int64  `datastore:"-"`
-	VoiceID string `json:"voiceID"`
-	UserID  string `json:"userID"`
-	Text    string `json:"text"`
-	Created time.Time
+	commentId int64  `datastore:"-"`
+	VoiceId   string `json:"voiceId"`
+	UserId    string `json:"userId"`
+	Text      string `json:"text"`
+	Created   time.Time
 }
 
 // ProjectName is used for datastore.newClient()

@@ -26,7 +26,7 @@ func CommentGetAll(w http.ResponseWriter, r *http.Request) {
 	ids, err := client.GetAll(ctx, query, &comments)
 	// 2.1 Iterate and assign IDs to each comments
 	for i, _ := range comments {
-		comments[i].ID = ids[i].ID
+		comments[i].commentId = ids[i].ID
 	}
 
 	// 3. Write into JSON
