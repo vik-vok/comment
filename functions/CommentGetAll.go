@@ -25,6 +25,12 @@ func CommentGetAll(w http.ResponseWriter, r *http.Request) {
 	var comments []Comment
 	query := datastore.NewQuery(EntityName)
 	ids, err := client.GetAll(ctx, query, &comments)
+
+	// 2.0 If result is nil that means we have no data
+	if comments == nil{
+		comments = []Comment{}
+		ids = []*datastore.Key{}
+	}
 	// 2.1 Iterate and assign IDs to each comments
 	for i, _ := range comments {
 		comments[i].CommentId = ids[i].ID
@@ -33,14 +39,13 @@ func CommentGetAll(w http.ResponseWriter, r *http.Request) {
 	sort.Slice(comments, func(i, j int) bool {
 		return comments[i].Created.Before(comments[j].Created)
 	})
-	fmt.Printf("%+v\n", comments)
-
 
 	// 3. Write into JSON
 	byteArray, err := json.Marshal(comments)
 	if err != nil {
 		fmt.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 
 	// 5. Send response

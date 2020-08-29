@@ -38,11 +38,17 @@ func CommentOriginalVoicesGet(w http.ResponseWriter, r *http.Request) {
 	var comments []Comment
 	query := datastore.NewQuery(EntityName).Filter("VoiceId =", d.ID)
 	ids, err := client.GetAll(ctx, query, &comments)
-	// 2.1 Iterate and assign IDs to each comments
+
+	// 3.0 If result is nil that means we have no data
+	if comments == nil{
+		comments = []Comment{}
+		ids = []*datastore.Key{}
+	}
+	// 3.1 Iterate and assign IDs to each comments
 	for i, _ := range comments {
 		comments[i].CommentId = ids[i].ID
 	}
-	// 2.2 Sort with created date
+	// 3.2 Sort with created date
 	sort.Slice(comments, func(i, j int) bool {
 		return comments[i].Created.Before(comments[j].Created)
 	})
