@@ -40,7 +40,7 @@ func CommentOriginalVoicesGet(w http.ResponseWriter, r *http.Request) {
 	ids, err := client.GetAll(ctx, query, &comments)
 	// 2.1 Iterate and assign IDs to each comments
 	for i, _ := range comments {
-		comments[i].commentId = ids[i].ID
+		comments[i].CommentId = ids[i].ID
 	}
 	// 2.2 Sort with created date
 	sort.Slice(comments, func(i, j int) bool {

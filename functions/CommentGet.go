@@ -38,7 +38,7 @@ func CommentGet(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
-	comment.commentId = d.ID
+	comment.CommentId = d.ID
 
 	// 4. Cast Comment to JSON
 	byteArray, err := json.Marshal(comment)

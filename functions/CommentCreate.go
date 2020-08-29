@@ -44,7 +44,7 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 4. Cast Comment to JSON
-	comment.commentId = key.ID
+	comment.CommentId = key.ID
 	byteArray, err := json.Marshal(comment)
 	if err != nil {
 		fmt.Println(err) /* log error */
